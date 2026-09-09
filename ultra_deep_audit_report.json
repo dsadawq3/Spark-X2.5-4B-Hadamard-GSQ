@@ -1,0 +1,365 @@
+{
+  "summary": {
+    "sequence_tokens_evaluated": 119,
+    "final_layer_cosine_similarity": 0.9074698090553284,
+    "final_layer_relative_deviation": 0.4274015426635742,
+    "top1_argmax_agreement_pct": 93.27731092436974,
+    "top5_jaccard_overlap_pct": 58.25663598772846,
+    "top10_jaccard_overlap_pct": 53.33077286858801,
+    "kullback_leibler_divergence": 0.10953715443611145,
+    "logit_entropy_raw": 0.18430979549884796,
+    "logit_entropy_quant": 0.2657751441001892,
+    "logit_entropy_shift": 0.08146534860134125,
+    "mean_null_space_noise_pct": 52.137869058383835,
+    "lyapunov_exponent_lambda": 0.04976157951688912,
+    "error_dynamics_verdict": "Self-Stabilizing Attractor Dynamics (Bounded Sublinear Drift)",
+    "bridge_layers_attention_diffs": {
+      "3": {
+        "mean_head_frobenius_diff": 0.09716265119378605,
+        "max_head_frobenius_diff": 0.17996391512729915,
+        "min_head_frobenius_diff": 0.056372299658157515
+      },
+      "15": {
+        "mean_head_frobenius_diff": 0.4691597031489618,
+        "max_head_frobenius_diff": 0.6089113024635192,
+        "min_head_frobenius_diff": 0.28367237198484624
+      },
+      "27": {
+        "mean_head_frobenius_diff": 0.712452443131409,
+        "max_head_frobenius_diff": 0.8425229493679065,
+        "min_head_frobenius_diff": 0.5299141263544103
+      },
+      "35": {
+        "mean_head_frobenius_diff": 0.2898812546298093,
+        "max_head_frobenius_diff": 0.5829177660697156,
+        "min_head_frobenius_diff": 0.09722826762996135
+      }
+    }
+  },
+  "layer_by_layer_drift": [
+    {
+      "layer_idx": 0,
+      "layer_type": "Standard",
+      "is_bifurcation": false,
+      "cosine_similarity": 0.9975159764289856,
+      "relative_deviation": 0.07301623374223709,
+      "max_absolute_deviation": 0.03515625,
+      "null_space_noise_percentage": 91.14834070205688
+    },
+    {
+      "layer_idx": 1,
+      "layer_type": "Standard",
+      "is_bifurcation": false,
+      "cosine_similarity": 0.9955784678459167,
+      "relative_deviation": 0.1000300794839859,
+      "max_absolute_deviation": 0.0625,
+      "null_space_noise_percentage": 86.95128560066223
+    },
+    {
+      "layer_idx": 2,
+      "layer_type": "Standard",
+      "is_bifurcation": false,
+      "cosine_similarity": 0.9934704303741455,
+      "relative_deviation": 0.12255386263132095,
+      "max_absolute_deviation": 0.10546875,
+      "null_space_noise_percentage": 87.18867301940918
+    },
+    {
+      "layer_idx": 3,
+      "layer_type": "Bifurcation",
+      "is_bifurcation": true,
+      "cosine_similarity": 0.9925426244735718,
+      "relative_deviation": 0.12384457141160965,
+      "max_absolute_deviation": 0.103515625,
+      "null_space_noise_percentage": 92.37520098686218
+    },
+    {
+      "layer_idx": 4,
+      "layer_type": "Standard",
+      "is_bifurcation": false,
+      "cosine_similarity": 0.9913840293884277,
+      "relative_deviation": 0.132253959774971,
+      "max_absolute_deviation": 0.08984375,
+      "null_space_noise_percentage": 92.90138483047485
+    },
+    {
+      "layer_idx": 5,
+      "layer_type": "Standard",
+      "is_bifurcation": false,
+      "cosine_similarity": 0.9903342127799988,
+      "relative_deviation": 0.13929279148578644,
+      "max_absolute_deviation": 0.091796875,
+      "null_space_noise_percentage": 93.03762316703796
+    },
+    {
+      "layer_idx": 6,
+      "layer_type": "Standard",
+      "is_bifurcation": false,
+      "cosine_similarity": 0.9870370030403137,
+      "relative_deviation": 0.1603814661502838,
+      "max_absolute_deviation": 0.1640625,
+      "null_space_noise_percentage": 88.5163426399231
+    },
+    {
+      "layer_idx": 7,
+      "layer_type": "Bifurcation",
+      "is_bifurcation": true,
+      "cosine_similarity": 0.9829773306846619,
+      "relative_deviation": 0.18368622660636902,
+      "max_absolute_deviation": 0.1875,
+      "null_space_noise_percentage": 85.9928548336029
+    },
+    {
+      "layer_idx": 8,
+      "layer_type": "Standard",
+      "is_bifurcation": false,
+      "cosine_similarity": 0.9772951006889343,
+      "relative_deviation": 0.21249127388000488,
+      "max_absolute_deviation": 0.75,
+      "null_space_noise_percentage": 77.07633376121521
+    },
+    {
+      "layer_idx": 9,
+      "layer_type": "Standard",
+      "is_bifurcation": false,
+      "cosine_similarity": 0.9598163962364197,
+      "relative_deviation": 0.2806808650493622,
+      "max_absolute_deviation": 1.84375,
+      "null_space_noise_percentage": 64.56823945045471
+    },
+    {
+      "layer_idx": 10,
+      "layer_type": "Standard",
+      "is_bifurcation": false,
+      "cosine_similarity": 0.9469449520111084,
+      "relative_deviation": 0.3219674229621887,
+      "max_absolute_deviation": 0.65625,
+      "null_space_noise_percentage": 66.70742630958557
+    },
+    {
+      "layer_idx": 11,
+      "layer_type": "Bifurcation",
+      "is_bifurcation": true,
+      "cosine_similarity": 0.9023665189743042,
+      "relative_deviation": 0.4327472150325775,
+      "max_absolute_deviation": 1.2734375,
+      "null_space_noise_percentage": 60.652804374694824
+    },
+    {
+      "layer_idx": 12,
+      "layer_type": "Standard",
+      "is_bifurcation": false,
+      "cosine_similarity": 0.9036111235618591,
+      "relative_deviation": 0.43100860714912415,
+      "max_absolute_deviation": 0.62890625,
+      "null_space_noise_percentage": 68.59514713287354
+    },
+    {
+      "layer_idx": 13,
+      "layer_type": "Standard",
+      "is_bifurcation": false,
+      "cosine_similarity": 0.9063143730163574,
+      "relative_deviation": 0.42794299125671387,
+      "max_absolute_deviation": 1.23828125,
+      "null_space_noise_percentage": 72.7398157119751
+    },
+    {
+      "layer_idx": 14,
+      "layer_type": "Standard",
+      "is_bifurcation": false,
+      "cosine_similarity": 0.8997724056243896,
+      "relative_deviation": 0.44228753447532654,
+      "max_absolute_deviation": 2.3046875,
+      "null_space_noise_percentage": 72.8563904762268
+    },
+    {
+      "layer_idx": 15,
+      "layer_type": "Bifurcation",
+      "is_bifurcation": true,
+      "cosine_similarity": 0.8465577960014343,
+      "relative_deviation": 0.552774965763092,
+      "max_absolute_deviation": 2.46875,
+      "null_space_noise_percentage": 66.83598756790161
+    },
+    {
+      "layer_idx": 16,
+      "layer_type": "Bifurcation",
+      "is_bifurcation": true,
+      "cosine_similarity": 0.8621729016304016,
+      "relative_deviation": 0.5276799201965332,
+      "max_absolute_deviation": 1.7578125,
+      "null_space_noise_percentage": 72.5565254688263
+    },
+    {
+      "layer_idx": 17,
+      "layer_type": "Bifurcation",
+      "is_bifurcation": true,
+      "cosine_similarity": 0.8834487795829773,
+      "relative_deviation": 0.4870207905769348,
+      "max_absolute_deviation": 1.501953125,
+      "null_space_noise_percentage": 79.0110170841217
+    },
+    {
+      "layer_idx": 18,
+      "layer_type": "Bifurcation",
+      "is_bifurcation": true,
+      "cosine_similarity": 0.8919216990470886,
+      "relative_deviation": 0.4670938551425934,
+      "max_absolute_deviation": 1.78125,
+      "null_space_noise_percentage": 83.42756032943726
+    },
+    {
+      "layer_idx": 19,
+      "layer_type": "Bifurcation",
+      "is_bifurcation": true,
+      "cosine_similarity": 0.843601644039154,
+      "relative_deviation": 0.5427502393722534,
+      "max_absolute_deviation": 46.703125,
+      "null_space_noise_percentage": 36.45874261856079
+    },
+    {
+      "layer_idx": 20,
+      "layer_type": "Bifurcation",
+      "is_bifurcation": true,
+      "cosine_similarity": 0.8313264846801758,
+      "relative_deviation": 0.5583547353744507,
+      "max_absolute_deviation": 81.84375,
+      "null_space_noise_percentage": 22.23290652036667
+    },
+    {
+      "layer_idx": 21,
+      "layer_type": "Bifurcation",
+      "is_bifurcation": true,
+      "cosine_similarity": 0.8457605838775635,
+      "relative_deviation": 0.53507000207901,
+      "max_absolute_deviation": 98.9375,
+      "null_space_noise_percentage": 21.55759036540985
+    },
+    {
+      "layer_idx": 22,
+      "layer_type": "Bifurcation",
+      "is_bifurcation": true,
+      "cosine_similarity": 0.9257856607437134,
+      "relative_deviation": 0.3830324411392212,
+      "max_absolute_deviation": 9.5625,
+      "null_space_noise_percentage": 76.76927447319031
+    },
+    {
+      "layer_idx": 23,
+      "layer_type": "Bifurcation",
+      "is_bifurcation": true,
+      "cosine_similarity": 0.7973001599311829,
+      "relative_deviation": 0.6037932634353638,
+      "max_absolute_deviation": 388.4375,
+      "null_space_noise_percentage": 4.328474774956703
+    },
+    {
+      "layer_idx": 24,
+      "layer_type": "Bifurcation",
+      "is_bifurcation": true,
+      "cosine_similarity": 0.7899307012557983,
+      "relative_deviation": 0.6132668852806091,
+      "max_absolute_deviation": 499.5,
+      "null_space_noise_percentage": 3.349671885371208
+    },
+    {
+      "layer_idx": 25,
+      "layer_type": "Bifurcation",
+      "is_bifurcation": true,
+      "cosine_similarity": 0.7895825505256653,
+      "relative_deviation": 0.6136791706085205,
+      "max_absolute_deviation": 519.4375,
+      "null_space_noise_percentage": 3.3638257533311844
+    },
+    {
+      "layer_idx": 26,
+      "layer_type": "Bifurcation",
+      "is_bifurcation": true,
+      "cosine_similarity": 0.7878687977790833,
+      "relative_deviation": 0.6158700585365295,
+      "max_absolute_deviation": 530.3125,
+      "null_space_noise_percentage": 3.4940477460622787
+    },
+    {
+      "layer_idx": 27,
+      "layer_type": "Bifurcation",
+      "is_bifurcation": true,
+      "cosine_similarity": 0.7982054948806763,
+      "relative_deviation": 0.6024319529533386,
+      "max_absolute_deviation": 548.5,
+      "null_space_noise_percentage": 4.8262737691402435
+    },
+    {
+      "layer_idx": 28,
+      "layer_type": "Bifurcation",
+      "is_bifurcation": true,
+      "cosine_similarity": 0.8001918792724609,
+      "relative_deviation": 0.5997823476791382,
+      "max_absolute_deviation": 555.375,
+      "null_space_noise_percentage": 5.055005103349686
+    },
+    {
+      "layer_idx": 29,
+      "layer_type": "Standard",
+      "is_bifurcation": false,
+      "cosine_similarity": 0.8020066022872925,
+      "relative_deviation": 0.5973649024963379,
+      "max_absolute_deviation": 554.5,
+      "null_space_noise_percentage": 5.4514385759830475
+    },
+    {
+      "layer_idx": 30,
+      "layer_type": "Standard",
+      "is_bifurcation": false,
+      "cosine_similarity": 0.7929295301437378,
+      "relative_deviation": 0.6094497442245483,
+      "max_absolute_deviation": 562.875,
+      "null_space_noise_percentage": 6.163576245307922
+    },
+    {
+      "layer_idx": 31,
+      "layer_type": "Bifurcation",
+      "is_bifurcation": true,
+      "cosine_similarity": 0.8092622756958008,
+      "relative_deviation": 0.5875659584999084,
+      "max_absolute_deviation": 555.0,
+      "null_space_noise_percentage": 7.883118838071823
+    },
+    {
+      "layer_idx": 32,
+      "layer_type": "Standard",
+      "is_bifurcation": false,
+      "cosine_similarity": 0.8118283748626709,
+      "relative_deviation": 0.5840616226196289,
+      "max_absolute_deviation": 556.0,
+      "null_space_noise_percentage": 8.672059327363968
+    },
+    {
+      "layer_idx": 33,
+      "layer_type": "Standard",
+      "is_bifurcation": false,
+      "cosine_similarity": 0.8210147619247437,
+      "relative_deviation": 0.5711383819580078,
+      "max_absolute_deviation": 508.75,
+      "null_space_noise_percentage": 11.18399128317833
+    },
+    {
+      "layer_idx": 34,
+      "layer_type": "Standard",
+      "is_bifurcation": false,
+      "cosine_similarity": 0.9061205983161926,
+      "relative_deviation": 0.4329591989517212,
+      "max_absolute_deviation": 34.5,
+      "null_space_noise_percentage": 80.99199533462524
+    },
+    {
+      "layer_idx": 35,
+      "layer_type": "Bifurcation",
+      "is_bifurcation": true,
+      "cosine_similarity": 0.9074698090553284,
+      "relative_deviation": 0.4274015426635742,
+      "max_absolute_deviation": 30.375,
+      "null_space_noise_percentage": 72.04234004020691
+    }
+  ]
+}

@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2020" height="700" viewBox="0 120 2020 700">
+  <defs>
+    <marker id="arrow-thin" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#000000"/>
+    </marker>
+    <marker id="arrow-main" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#000000"/>
+    </marker>
+    <style>
+      text { font-family: Arial, Helvetica, sans-serif; }
+      .title { fill:#17243B; font-size:22px; font-weight:700; text-anchor:middle; dominant-baseline:middle; }
+      .card-title { font-size:16px; font-weight:700; text-anchor:middle; dominant-baseline:middle; }
+      .card-sub { fill:#4D4D4D; font-size:15px; text-anchor:middle; dominant-baseline:middle; }
+      .group-title { fill:#666666; font-size:15px; font-weight:700; text-anchor:middle; dominant-baseline:middle; }
+      .edge { fill:none; stroke:#000000; stroke-width:1.5; marker-end:url(#arrow-thin); }
+      .main-edge { fill:none; stroke:#000000; stroke-width:2.5; marker-end:url(#arrow-main); }
+      .edge-label { fill:#000000; font-size:16px; }
+    </style>
+  </defs>
+
+  <rect x="0" y="120" width="2020" height="700" fill="#FFFFFF"/>
+
+  <!-- Stage panels -->
+  <rect x="40" y="145" width="420" height="625" rx="10" fill="none" stroke="#B3B3B3" stroke-width="1.2"/>
+  <rect x="500" y="145" width="780" height="625" rx="10" fill="none" stroke="#B3B3B3" stroke-width="1.2"/>
+  <rect x="1320" y="145" width="660" height="625" rx="10" fill="none" stroke="#B3B3B3" stroke-width="1.2"/>
+
+  <!-- Stage 1 -->
+  <text x="250" y="202" class="title">Supervised Fine-Tuning</text>
+
+  <rect x="55" y="251" width="190" height="84" rx="12" fill="#DAE8FC" stroke="#6C8EBF" stroke-width="1.2"/>
+  <text x="150" y="279" class="card-title" fill="#1F3A5F" font-size="21">Chat &amp; Alignment</text>
+  <text x="150" y="311" class="card-sub" font-size="20">helpfulness · safety</text>
+
+  <rect x="255" y="251" width="190" height="84" rx="12" fill="#D5E8D4" stroke="#82B366" stroke-width="1.2"/>
+  <text x="350" y="268" class="card-title" fill="#2D572C" font-size="21">Instruction</text>
+  <text x="350" y="292" class="card-title" fill="#2D572C" font-size="21">Following</text>
+  <text x="350" y="320" class="card-sub" font-size="20">constraints · formats</text>
+
+  <rect x="55" y="347" width="190" height="84" rx="12" fill="#FFF2CC" stroke="#D6B656" stroke-width="1.2"/>
+  <text x="150" y="376" class="card-title" fill="#665500" font-size="21">Code</text>
+  <text x="150" y="408" class="card-sub" font-size="20">generation · execution</text>
+
+  <rect x="255" y="347" width="190" height="84" rx="12" fill="#FFE6CC" stroke="#D79B00" stroke-width="1.2"/>
+  <text x="350" y="376" class="card-title" fill="#663C00" font-size="21">Agentic Tasks</text>
+  <text x="350" y="408" class="card-sub" font-size="20">tools · environments</text>
+
+  <path d="M250 431 V463" class="edge"/>
+  <rect x="107" y="463" width="286" height="72" rx="10" fill="#FFFFFF" stroke="#91A4BF" stroke-width="1.6"/>
+  <text x="250" y="499" class="card-title" fill="#243A5E" font-size="18">Supervised Fine-Tuning</text>
+
+  <path d="M250 535 V575" class="edge"/>
+  <rect x="107" y="575" width="286" height="104" rx="18" fill="#DAE8FC" stroke="#6C8EBF" stroke-width="1.6"/>
+  <text x="250" y="627" class="card-title" fill="#1F3A5F" font-size="20">Initial SFT Policy</text>
+
+  <!-- Main flow: Stage 1 to Stage 2 -->
+  <path d="M393 627 H480 V377 H680" class="main-edge"/>
+
+  <!-- Stage 2 -->
+  <text x="890" y="202" class="title">Domain Expert Training</text>
+
+  <rect x="535" y="245" width="710" height="58" rx="12" fill="#D5E8D4" stroke="#82B366" stroke-width="1.3"/>
+  <text x="890" y="274" text-anchor="middle" dominant-baseline="middle" fill="#2D572C" font-size="16" font-weight="700">Exploration &amp; Environment Interaction</text>
+
+  <path d="M890 303 V340" class="edge"/>
+  <rect x="680" y="340" width="420" height="74" rx="12" fill="#DAE8FC" stroke="#6C8EBF" stroke-width="1.5"/>
+  <text x="890" y="377" class="card-title" fill="#1F3A5F" font-size="18">Domain-Specialized Reinforcement Learning</text>
+
+  <path d="M890 414 V440" class="edge"/>
+  <rect x="535" y="440" width="710" height="270" rx="12" fill="#FFFFFF" stroke="#D6D6D6" stroke-width="1.2"/>
+  <text x="890" y="463" class="group-title">DOMAIN EXPERTS</text>
+
+  <rect x="565" y="490" width="310" height="85" rx="12" fill="#DAE8FC" stroke="#6C8EBF" stroke-width="1.3"/>
+  <text x="720" y="532.5" class="card-title" fill="#1F3A5F">General Expert</text>
+  <rect x="905" y="490" width="310" height="85" rx="12" fill="#D5E8D4" stroke="#82B366" stroke-width="1.3"/>
+  <text x="1060" y="532.5" class="card-title" fill="#2D572C">Reasoning Expert</text>
+  <rect x="565" y="595" width="310" height="85" rx="12" fill="#FFF2CC" stroke="#D6B656" stroke-width="1.3"/>
+  <text x="720" y="637.5" class="card-title" fill="#665500">Agent Expert</text>
+  <rect x="905" y="595" width="310" height="85" rx="12" fill="#FFE6CC" stroke="#D79B00" stroke-width="1.3"/>
+  <text x="1060" y="637.5" class="card-title" fill="#663C00">Code Expert</text>
+
+  <!-- Main flow: Stage 2 to Stage 3 -->
+  <path d="M1245 575 H1340" class="main-edge"/>
+
+  <!-- Stage 3 -->
+  <text x="1650" y="202" class="title">Multi-Teacher On-Policy Distillation</text>
+
+  <rect x="1390" y="245" width="150" height="72" rx="10" fill="#FFFFFF" stroke="#BFCADA" stroke-width="1.4"/>
+  <text x="1465" y="281" class="card-title" fill="#34465F">Prompt Batch</text>
+
+  <path d="M1540 281 H1670" class="edge"/>
+  <rect x="1670" y="245" width="280" height="72" rx="12" fill="#D5E8D4" stroke="#82B366" stroke-width="1.4"/>
+  <text x="1810" y="269" class="card-title" fill="#2D572C" font-size="17">On-Policy Trajectories</text>
+  <text x="1810" y="295" class="card-sub">Student-generated tokens y₁ … yₜ</text>
+
+  <path d="M1465 317 V425" class="edge"/>
+  <rect x="1340" y="425" width="250" height="250" rx="12" fill="#FFFFFF" stroke="#D0D9E5" stroke-width="1.3"/>
+  <text x="1465" y="449" class="group-title" font-size="16">ROUTED EXPERT TEACHERS</text>
+
+  <rect x="1362" y="470" width="206" height="40" rx="9" fill="#DAE8FC" stroke="#6C8EBF"/>
+  <text x="1465" y="490" class="card-title" fill="#1F3A5F" font-size="16">General</text>
+  <rect x="1362" y="520" width="206" height="40" rx="9" fill="#D5E8D4" stroke="#82B366"/>
+  <text x="1465" y="540" class="card-title" fill="#2D572C" font-size="16">Reasoning</text>
+  <rect x="1362" y="570" width="206" height="40" rx="9" fill="#FFF2CC" stroke="#D6B656"/>
+  <text x="1465" y="590" class="card-title" fill="#665500" font-size="16">Agent</text>
+  <rect x="1362" y="620" width="206" height="40" rx="9" fill="#FFE6CC" stroke="#D79B00"/>
+  <text x="1465" y="640" class="card-title" fill="#663C00" font-size="16">Code</text>
+
+  <path d="M1590 550 H1670" class="edge"/>
+  <text x="1630" y="537" class="edge-label" text-anchor="middle">guidance</text>
+
+  <path d="M1810 317 V430" class="edge"/>
+  <text x="1823" y="377" class="edge-label">student trajectories</text>
+
+  <rect x="1670" y="430" width="280" height="220" rx="16" fill="#FFFFFF" stroke="#D79B00" stroke-width="1.5"/>
+  <text x="1810" y="454" class="card-title" fill="#663C00" font-size="22">M-OPD</text>
+  <image id="mopdDistribution" x="1685" y="470" width="250" height="165" preserveAspectRatio="xMidYMid meet" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MDAiIGhlaWdodD0iMzMwIiB2aWV3Qm94PSIwIDAgNTAwIDMzMCI+PGRlZnM+PG1hcmtlciBpZD0iZGlzdC1hcnJvdyIgbWFya2VyV2lkdGg9IjEwIiBtYXJrZXJIZWlnaHQ9IjEwIiByZWZYPSI4IiByZWZZPSIzIiBvcmllbnQ9ImF1dG8iIG1hcmtlclVuaXRzPSJzdHJva2VXaWR0aCI+PHBhdGggZD0iTTAsMCBMMCw2IEw5LDMgeiIgZmlsbD0iIzAwMDAwMCIvPjwvbWFya2VyPjxzdHlsZT4gICAgICAgdGV4dCB7IGZvbnQtZmFtaWx5OiBBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmOyBmaWxsOiMyRjJGMkY7IH0gICAgICAgLmxhYmVsIHsgZm9udC1zaXplOjI4cHg7IGZvbnQtd2VpZ2h0OjcwMDsgfSAgICAgICAuYXhpcy1sYWJlbCB7IGZvbnQtc2l6ZToyNnB4OyBmaWxsOiM0RDRENEQ7IH0gICAgIDwvc3R5bGU+PC9kZWZzPjx0ZXh0IHg9IjI4IiB5PSIyNSIgY2xhc3M9ImxhYmVsIj5UZWFjaGVyIGRpc3RyaWJ1dGlvbiDPgDx0c3BhbiBmb250LXNpemU9IjIwIiBkeT0iOCI+VDwvdHNwYW4+PC90ZXh0PjxwYXRoIGQ9Ik0zMCA0OCBWMTMyIEgzODIiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzAwMDAwMCIgc3Ryb2tlLXdpZHRoPSIyIi8+PGcgZmlsbD0iIzlGQzVFOCIgc3Ryb2tlPSIjNkM4RUJGIiBzdHJva2Utd2lkdGg9IjIiPjxyZWN0IHg9IjQ4IiB5PSI5NyIgd2lkdGg9IjI4IiBoZWlnaHQ9IjM1Ii8+PHJlY3QgeD0iOTAiIHk9IjYyIiB3aWR0aD0iMjgiIGhlaWdodD0iNzAiLz48cmVjdCB4PSIxMzIiIHk9IjgyIiB3aWR0aD0iMjgiIGhlaWdodD0iNTAiLz48cmVjdCB4PSIxNzQiIHk9IjM3IiB3aWR0aD0iMjgiIGhlaWdodD0iOTUiLz48cmVjdCB4PSIyMTYiIHk9IjEwNyIgd2lkdGg9IjI4IiBoZWlnaHQ9IjI1Ii8+PHJlY3QgeD0iMjU4IiB5PSI5MCIgd2lkdGg9IjI4IiBoZWlnaHQ9IjQyIi8+PHJlY3QgeD0iMzAwIiB5PSI1MiIgd2lkdGg9IjI4IiBoZWlnaHQ9IjgwIi8+PHJlY3QgeD0iMzQyIiB5PSIxMDIiIHdpZHRoPSIyOCIgaGVpZ2h0PSIzMCIvPjwvZz48dGV4dCB4PSI0ODIiIHk9IjEyMiIgY2xhc3M9ImF4aXMtbGFiZWwiIHRleHQtYW5jaG9yPSJlbmQiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPnRva2VuIGlkPC90ZXh0PjxwYXRoIGQ9Ik0yNTAgMTQ5IFYxODgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzAwMDAwMCIgc3Ryb2tlLXdpZHRoPSIzIiBtYXJrZXItZW5kPSJ1cmwoI2Rpc3QtYXJyb3cpIi8+PHJlY3QgeD0iMjg1IiB5PSIxNjAiIHdpZHRoPSIxNTAiIGhlaWdodD0iMzAiIHJ4PSIxNSIgZmlsbD0iI0ZGRkZGRiIvPjx0ZXh0IHg9IjM2MCIgeT0iMTc2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiBmb250LXNpemU9IjI2IiBmb250LXdlaWdodD0iNzAwIj5SZXZlcnNlIEtMPC90ZXh0Pjx0ZXh0IHg9IjI4IiB5PSIyMTEiIGNsYXNzPSJsYWJlbCI+U3R1ZGVudCBkaXN0cmlidXRpb24gz4A8dHNwYW4gZm9udC1zaXplPSIyMCIgZHk9IjgiPs64PC90c3Bhbj48L3RleHQ+PHBhdGggZD0iTTMwIDIzMCBWMzEwIEgzODIiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzAwMDAwMCIgc3Ryb2tlLXdpZHRoPSIyIi8+PGcgZmlsbD0iI0Y5Q0I5QyIgc3Ryb2tlPSIjRDc5QjAwIiBzdHJva2Utd2lkdGg9IjIiPjxyZWN0IHg9IjQ4IiB5PSIyODAiIHdpZHRoPSIyOCIgaGVpZ2h0PSIzMCIvPjxyZWN0IHg9IjkwIiB5PSIyNTUiIHdpZHRoPSIyOCIgaGVpZ2h0PSI1NSIvPjxyZWN0IHg9IjEzMiIgeT0iMjYyIiB3aWR0aD0iMjgiIGhlaWdodD0iNDgiLz48cmVjdCB4PSIxNzQiIHk9IjI0MiIgd2lkdGg9IjI4IiBoZWlnaHQ9IjY4Ii8+PHJlY3QgeD0iMjE2IiB5PSIyODgiIHdpZHRoPSIyOCIgaGVpZ2h0PSIyMiIvPjxyZWN0IHg9IjI1OCIgeT0iMjc0IiB3aWR0aD0iMjgiIGhlaWdodD0iMzYiLz48cmVjdCB4PSIzMDAiIHk9IjI1MiIgd2lkdGg9IjI4IiBoZWlnaHQ9IjU4Ii8+PHJlY3QgeD0iMzQyIiB5PSIyODMiIHdpZHRoPSIyOCIgaGVpZ2h0PSIyNyIvPjwvZz48dGV4dCB4PSI0ODIiIHk9IjMwMCIgY2xhc3M9ImF4aXMtbGFiZWwiIHRleHQtYW5jaG9yPSJlbmQiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPnRva2VuIGlkPC90ZXh0Pjwvc3ZnPg=="/>
+
+  <path d="M1810 650 V690" class="main-edge"/>
+
+  <rect x="1679.5" y="690" width="261" height="65" rx="18" fill="#DAE8FC" stroke="#6C8EBF" stroke-width="1.6"/>
+  <text x="1810" y="722.5" class="card-title" fill="#1F3A5F" font-size="19">Unified Model</text>
+</svg>

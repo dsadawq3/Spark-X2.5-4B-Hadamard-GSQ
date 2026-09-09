@@ -1,0 +1,8 @@
+# Git ignore for Spark-X2.5-4B-Hadamard-GSQ
+*.safetensors
+*.bin
+*.pt
+*.pth
+__pycache__/
+*.pyc
+*.tmp
