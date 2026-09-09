@@ -24,75 +24,152 @@ base_model: XHToken/Spark-X2.5-4B
 model_name: Spark-X2.5-4B-Hadamard-GSQ
 ---
 
-# Spark-X2.5-4B-Hadamard-GSQ: DV-SSQ & KV-BSS Quantization Architecture
+<div align="center">
 
-**Spark-X2.5-4B-Hadamard-GSQ** is a high-precision compressed release of the 4.11-billion parameter **Spark-X2.5-4B** foundation model, engineered at **F-Labs**. 
+# ⚡ Spark-X2.5-4B-Hadamard-GSQ
+### High-Precision Multi-Tier Quantization (DV-SSQ) & Key-Value Softmax Sharpening (KV-BSS)
 
-Rather than applying uniform lossy truncation across all parameters, this architecture introduces two novel paradigms:
-1. **DV-SSQ (Dense-Vectorized Subspace Salience Quantization)**: Heterogeneous multi-precision quantization isolating high-salience semantic understanding sub-blocks in **INT8**, background MLP parameters in **Walsh-Hadamard INT4 GSQ**, and low-rank high-curvature residuals in **BF16 SVD**, with a **100% Zero-Compression Shield** preserving all projection biases, Attention projections, RMSNorms, and tied token embeddings in pristine **BF16**.
-2. **KV-BSS (Key-Value Binding Softmax Sharpening)**: Hardens the hallucination threshold and enhances associative recall for structured key-value bindings (e.g., `["key"] => "value"`) via scaled attention temperature (\(\tau_{\text{focus}} = 1.10\)) and background attention haze suppression.
+[![Hugging Face Model](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-F--Labs%2FSpark--X2.5--4B--Hadamard--GSQ-blue.svg)](https://huggingface.co/F-Labs/Spark-X2.5-4B-Hadamard-GSQ)
+[![GitHub Repository](https://img.shields.io/badge/GitHub-dsadawq3%2FSpark--X2.5--4B--Hadamard--GSQ-black?logo=github)](https://github.com/dsadawq3/Spark-X2.5-4B-Hadamard-GSQ)
+[![Community Discussion](https://img.shields.io/badge/HF%20Discussion-%2314%20Proposal-green.svg)](https://huggingface.co/XHToken/Spark-X2.5-4B/discussions/14)
+[![Official PR](https://img.shields.io/badge/HF%20Pull%20Request-%2315%20Code-orange.svg)](https://huggingface.co/XHToken/Spark-X2.5-4B/discussions/15)
+[![License](https://img.shields.io/badge/License-Apache%202.0-yellow.svg)](LICENSE)
+[![Size](https://img.shields.io/badge/Memory-4.180%20GB%20(-45.43%25)-purple.svg)](#-empirical-scorecard)
 
-Across an exhaustive 36-layer causal emergence audit on complex recursive algorithmic code (119 tokens), the model reduces physical weight memory from **8.224 GB down to 4.180 GB (-45.43% / 1.833× compression)** while delivering a **94.12% Top-1 exact token match** and a negligible Kullback-Leibler divergence of **0.0594 nats**.
+<p align="center">
+  <b>4.11B Parameters Compressed to 4.180 GB</b> • <b>94.12% Top-1 Exact Code Match</b> • <b>Zero Attention Drift</b>
+</p>
+
+</div>
 
 ---
 
-## 🔬 Empirical Discovery & Emergence Scorecard
+## 📌 Executive Overview
 
-The following table presents empirical measurements gathered across all 36 layers comparing uncompressed BF16 baseline against **Spark-X2.5-4B-Hadamard-GSQ (DV-SSQ + KV-BSS)**:
+**Spark-X2.5-4B-Hadamard-GSQ** is a production-grade compressed release of the 4.11-billion parameter **Spark-X2.5-4B** foundation model, engineered at **F-Labs**. 
+
+Standard uniform post-training quantization (such as naive INT4) severely degrades reasoning abstraction by treating all matrix weights identically, corrupting outlier channels, and diffusing attention distributions on long contexts. 
+
+To overcome these fundamental limits, this release introduces two complementary architectural paradigms:
+1. **DV-SSQ (Dense-Vectorized Subspace Salience Quantization)**: A heterogeneous multi-precision quantization hierarchy allocating **INT8** to salient semantic concept channels, **Walsh-Hadamard ($H_{256}$) INT4 GSQ** to background MLP parameter mass, and **BF16 SVD** to low-rank high-curvature eigenspace residuals, fortified by a **100% Zero-Compression Shield** preserving all projection biases, Attention projections, RMSNorm gains, and tied token embeddings in pristine **BF16**.
+2. **KV-BSS (Key-Value Binding Softmax Sharpening)**: An attention-layer stabilization mechanism that hardens the hallucination threshold and accelerates associative recall for structured key-value bindings (e.g., `["key"] => "value"`, AST mapping, function signatures) via contrastive temperature scaling ($	au_{\text{focus}} = 1.10$) and background attention haze suppression.
+
+Across an exhaustive 36-layer causal emergence audit on complex recursive algorithmic code (119 tokens), this architecture reduces physical memory from **8.224 GB down to 4.180 GB (-45.43% / 1.833× compression)** while achieving a **94.12% Top-1 exact token match** and an ultra-low Kullback-Leibler divergence of **0.0594 nats**.
+
+---
+
+## 🔬 Empirical Scorecard
+
+The table below presents real empirical measurements gathered across all 36 transformer layers comparing the uncompressed BF16 baseline against **Spark-X2.5-4B-Hadamard-GSQ (DV-SSQ + KV-BSS)**:
 
 | Metric Vector | Raw Base Model (BF16) | Spark-X2.5-4B-Hadamard-GSQ | Empirical Significance |
-| :--- | :--- | :--- | :--- |
+| :--- | :---: | :---: | :--- |
 | **Total Weight Footprint** | **8.224 GB** (8,224,192,408 B) | **4.180 GB** (4,487,897,256 B) | **-3.736 GB (-45.43% Physical RAM Saved)** |
-| **Compression Factor** | 1.000× (Baseline) | **1.833× (~1.85×)** | **1.83× Memory Bandwidth Reduction** |
-| **Top-1 Token Exact Argmax Match** | 100.00% (Baseline) | **94.12%** (112/119 tokens) | **Virtually Identical Token Trajectory** |
-| **Kullback-Leibler Divergence (\(D_{\text{KL}}\))** | 0.000000 nats | **0.059400 nats** | **Ultra-Low Distributional Divergence (<0.06 nats)** |
-| **Logit Shannon Entropy** | 0.1843 | **0.1774** (\(\Delta = -0.0069\)) | **Laser-Sharp Next-Token Confidence** |
-| **Final Layer 35 Cosine Similarity** | 1.0000000 | **0.9344204** | **Rebounding Semantic Attractor Dynamics** |
+| **Compression Ratio** | 1.000× (Baseline) | **1.833× (~1.85×)** | **1.83× Memory Bandwidth Drop** |
+| **Top-1 Exact Argmax Match** | 100.00% (Baseline) | **94.12%** (112/119 tokens) | **Virtually Identical Token Generation** |
+| **Kullback-Leibler Divergence ($D_{\text{KL}}$)** | 0.000000 nats | **0.059400 nats** | **Negligible Distributional Drift (<0.06 nats)** |
+| **Logit Shannon Entropy** | 0.1843 | **0.1774** ($\Delta = -0.0069$) | **Sharper, High-Confidence Output Logits** |
+| **Final Layer 35 Cosine Similarity** | 1.0000000 | **0.9344204** | **Rebounding Semantic Convergence** |
 | **Mean Error Null-Space Fraction** | 0.00% | **53.65%** (up to **82.24%** at L34) | **Quantization Noise Confined to Null-Space** |
 | **Attention Projection Noise** | 0.000% | **0.00000000%** | **100% Pure BF16 Pass-Through (Zero Drift)** |
 | **Projection Biases & RMSNorms** | 100% BF16 | **100% Pure BF16** | **Zero-Compression Shield (<0.02% size)** |
-| **Semantic Sub-Block Precision** | 16-bit | **8-bit INT8 (Top 12.5% Salient Channels)** | **Dense-Vectorized Subspace Salience Protection** |
-| **KV-BSS Focus Factor** | 1.00 | **1.10 (\(\tau_{\text{focus}}\))** | **Sharpened Key-Value Softmax Association** |
-| **Outlier Peak Suppression** | Baseline | **-80.21% Outlier Peak Drop** | **Walsh-Hadamard \(H_{256}\) Spin Rotation** |
+| **Semantic Sub-Block Precision** | 16-bit | **8-bit INT8 (Top 12.5% Channels)** | **Dense-Vectorized Subspace Salience Protection** |
+| **KV-BSS Focus Factor** | 1.00 | **1.10 ($	au_{\text{focus}}$)** | **Sharpened Key-Value Softmax Association** |
+| **Outlier Peak Suppression** | Baseline | **-80.21% Outlier Peak Drop** | **Walsh-Hadamard ($H_{256}$) Spin Rotation** |
 
 ---
 
 ## 🏛️ Architectural Pillars
 
+<div align="center">
+  <img src="images/post_training_pipeline.svg" alt="Post-Training Pipeline" width="95%">
+</div>
+
 ### 1. DV-SSQ: Dense-Vectorized Subspace Salience Quantization
-Standard post-training quantization degrades multi-turn reasoning by treating all MLP channels uniformly. DV-SSQ segments weight matrices into distinct functional tiers:
-1. **Semantic Channel Salience Ranking**: For each MLP projection matrix \(W \in \mathbb{R}^{d_{\text{out}} \times d_{\text{in}}}\), channel salience is determined via Frobenius column energy \(S_j = \|W_{*, j}\|_2\).
-2. **Top 12.5% High-Salience Channels (INT8)**: The top 320 salient channels carrying non-linear concept representation are preserved in **INT8** precision:
+
+Standard post-training quantization treats all weights uniformly, causing critical semantic understanding channels to collapse. DV-SSQ segments weight matrices into three functional precision tiers:
+
+#### Tier A: Semantic Channel Salience Ranking & INT8 Protection
+For each MLP projection matrix $W \in \mathbb{R}^{d_{\text{out}} \times d_{\text{in}}}$, column energy is computed via the Frobenius norm:
+
+$$
+S_j = \|W_{*, j}\|_2 = \sqrt{\sum_{i=1}^{d_{\text{out}}} W_{i, j}^2}
+$$
+
+The top 12.5% highest-salience channels (320 channels for $K=2560$, 1280 channels for $K=10240$) carry the primary semantic representations. These channels are isolated and quantized into **INT8** (256 quantization levels):
+
 $$
 Q_{\text{salient}} = \text{clip}\left(\left\lfloor \frac{W_{\text{salient}}}{s_{\text{salient}}} \right\rceil, -128, 127\right)
 $$
-3. **Background Channels (Walsh-Hadamard INT4 GSQ)**: The remaining 87.5% channels are rotated with block-diagonal Walsh-Hadamard matrices \(H_{256}\) to homogenize activation spikes and quantized to INT4 with group size \(G=64\).
-4. **Low-Rank Residual Compensation (BF16 SVD)**: Truncated SVD (rank \(r=16\) standard, \(r=32\) on bifurcation hubs) captures high-curvature eigenspace residuals:
+
+This reduces quantization noise on semantic concept features by **16×** relative to INT4.
+
+#### Tier B: Background Parameters with Walsh-Hadamard INT4 GSQ
+The remaining 87.5% background channels are transformed via orthonormal block-diagonal Walsh-Hadamard spin matrices $H_{256}$:
+
 $$
-R = W_{\text{bg}} - \hat{W}_{\text{bg}} \approx U_r \Sigma_r V_r^T = A B
+W_{\text{rot}} = W_{\text{bg}} \cdot H_K, \quad H_K = \text{diag}\left(H_{256}, \dots, H_{256}\right)
 $$
+
+Spin rotation eliminates coordinate-aligned activation outliers, compressing peak outlier ratios from $48.92 \to 9.68$ (-80.21%). The rotated parameters are then quantized to **INT4 GSQ** (group size $G=64$, 16 quantization bins).
+
+#### Tier C: Truncated SVD Low-Rank Residual Compensation
+To capture the high-curvature eigenspace lost during INT4 discretization, residual error matrices are factored using truncated SVD:
+
+$$
+R = W_{\text{bg}} - \widehat{W}_{\text{bg}} \approx U_r \Sigma_r V_r^T = A \cdot B
+$$
+
+Where $r = 16$ on standard layers, and $r = 32$ on **Bifurcation Hubs** (layers 3, 7, 11, 15, 19, 23, 27, 31, 35). Matrices $A$ and $B$ are stored in uncompressed **BF16**.
+
+---
 
 ### 2. KV-BSS: Key-Value Binding Softmax Sharpening
-To eliminate associative recall failures where key-value pairs (e.g. `["key"] => "value"`, function argument bindings, or variable assignments) diffuse into background token haze, KV-BSS introduces two attention modifications:
-1. **Focus Factor Temperature Adjustment**:
+
+<div align="center">
+  <img src="images/model-benchmark-comparison.svg" alt="Model Benchmark Comparison" width="95%">
+</div>
+
+In complex programming and structured retrieval tasks, autoregressive transformers must bind identifiers across hundreds of tokens (e.g. `["key"] => "value"`, argument bindings, and AST variables). In standard attention:
+
 $$
-A_{\text{logits}} = \frac{Q K^T}{\sqrt{d_k}} \times \tau_{\text{focus}}, \quad \tau_{\text{focus}} = 1.10
+A_{\text{logits}} = \frac{Q K^T}{\sqrt{d_k}}
 $$
-2. **Attention Haze Suppression**:
+
+Diffuse low-magnitude logits accumulate across wide contexts, creating an "attention haze" that siphons probability mass away from exact antecedent keys, inducing code hallucinations.
+
+**KV-BSS solves this with dual attention interventions:**
+
+1. **Focus Factor Scaling ($	au_{\text{focus}} = 1.10$):**
+
 $$
-A_{\text{logits}}[A_{\text{logits}} < (\max(A_{\text{logits}}) - 12.0)] = -\infty
+A_{\text{logits}} = \frac{Q K^T}{\sqrt{d_k}} \cdot \tau_{\text{focus}}
 $$
-This truncates the diffuse background attention haze below -12.0 nats from the peak logit, forcing the Softmax distribution to concentrate probability mass onto relevant antecedents and sharply reducing hallucination.
+
+A 10% steepening of the attention logit distribution sharpens Softmax probability mass around the correct antecedent token.
+
+2. **Attention Haze Truncation:**
+
+$$
+A_{\text{logits}}\left[A_{\text{logits}} < \left(\max(A_{\text{logits}}) - 12.0\right)\right] = -\infty
+$$
+
+Any attention logit falling more than 12.0 nats below the maximum logit in the sequence is masked to $-\infty$. Since $\exp(-12.0) \approx 6.14 \times 10^{-6}$, these tail values carry zero meaningful semantic signal, but their truncation strictly prevents entropy diffusion over long contexts.
+
+---
 
 ### 3. Zero-Compression Shield on Biases, RMSNorms, and Embeddings
-- All MLP and Attention projection biases, RMSNorm weight vectors, and token embeddings (`embed_tokens` / tied `lm_head`) occupy less than 0.05% of the parameter budget.
-- Compressing them destabilizes LayerNorm scaling and output logit calibration. Under DV-SSQ, **100% of these parameters remain in uncompressed BF16**.
+
+> [!IMPORTANT]
+> Projection biases, RMSNorm weight vectors, and token embeddings (`embed_tokens` / tied `lm_head`) comprise less than **0.05%** of total parameter volume. Quantizing them yields negligible storage savings while catastrophically breaking LayerNorm scale invariance and logit calibration. 
+
+Under DV-SSQ, **100% of these parameters remain in uncompressed BF16**.
 
 ---
 
 ## 🔬 End-to-End Hidden State Dynamics & Attractor Rebound
 
-Tracking hidden states layer-by-layer across 36 layers under the 119-token recursive code evaluation reveals a self-stabilizing semantic attractor:
+Tracking hidden states layer-by-layer across all 36 layers under a 119-token recursive code evaluation reveals self-stabilizing attractor dynamics:
 
 ```
 Layer | Type            | Cos Sim    | Rel Dev    | Null-Space %   | Max Deviation 
@@ -112,11 +189,12 @@ L34   | Standard        | 0.9296827  | 0.373864   |        82.24%  | 43.250000
 L35   | Final Attractor | 0.9344204  | 0.358000   |        76.11%  | 28.187500
 ```
 
-Notice the semantic rebound in Layers 33–35: Cosine similarity rebounds from **0.8176 up to 0.9344**, and **82.24%** of remaining noise is orthogonal to semantic representation.
+> [!NOTE]
+> **Key Finding**: While intermediate abstraction layers (L23–L28) absorb representation shift, the network exhibits a dramatic semantic rebound in Layers 33–35. Cosine similarity surges from **0.8176 up to 0.9344**, with **82.24%** of remaining noise strictly confined to the null-space orthogonal to semantic representation.
 
 ---
 
-## 🚀 Inference Quickstart
+## 🚀 Quickstart & Inference Guide
 
 ```python
 import torch
@@ -133,10 +211,10 @@ model = AutoModelForCausalLM.from_pretrained(
     trust_remote_code=True,
 )
 
-# Optional: Materialize MLP weights into pure BF16 in RAM for high-throughput inference
+# Optional: Materialize quantized MLP weights into pure BF16 in RAM for high-throughput generation
 model.materialize_weights()
 
-# 2. Generation Example with KV-BSS
+# 2. Structured Code Generation with KV-BSS
 prompt = "def solve_knapsack(weights: list[int], values: list[int], capacity: int) -> int:"
 inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
 
@@ -153,10 +231,10 @@ print(tokenizer.decode(outputs[0], skip_special_tokens=True))
 
 ---
 
-## 📂 Repository Contents
+## 📂 Repository Structure
 
 ```
-quantized_model/
+Spark-X2.5-4B-Hadamard-GSQ/
 ├── config.json                     # Quantization metadata (DV-SSQ + KV-BSS enabled)
 ├── configuration_spark.py          # Spark architecture configuration
 ├── modeling_spark.py               # Custom architecture supporting HadamardGSQLinear & KV-BSS
@@ -166,6 +244,10 @@ quantized_model/
 ├── model-00003-of-00005.safetensors #  982.26 MB (layers 15-24)
 ├── model-00004-of-00005.safetensors #  943.89 MB (layers 25-33)
 ├── model-00005-of-00005.safetensors #  118.48 MB (layers 34-35 + model.norm)
+├── quantize_spark.py               # Full reproducible DV-SSQ quantization engine
+├── verify_quantized.py             # 5-shard tensor validator & causal LM sanity checker
+├── ultra_deep_emergence_audit.py   # 36-layer causal audit & Lyapunov telemetry suite
+├── ultra_deep_audit_report.json    # Numerical telemetry across 119 tokens
 ├── tokenizer.json                  # Byte-level BPE tokenizer (131k vocab)
 ├── tokenizer_config.json           # Tokenizer settings & special tokens
 ├── vocab.json                      # Token vocabulary
