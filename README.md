@@ -34,10 +34,10 @@ model_name: Spark-X2.5-4B-Hadamard-GSQ
 [![Community Discussion](https://img.shields.io/badge/HF%20Discussion-%2314%20Proposal-green.svg)](https://huggingface.co/XHToken/Spark-X2.5-4B/discussions/14)
 [![Official PR](https://img.shields.io/badge/HF%20Pull%20Request-%2315%20Code-orange.svg)](https://huggingface.co/XHToken/Spark-X2.5-4B/discussions/15)
 [![License](https://img.shields.io/badge/License-Apache%202.0-yellow.svg)](LICENSE)
-[![Size](https://img.shields.io/badge/Memory-4.180%20GB%20(-45.43%25)-purple.svg)](#-empirical-scorecard)
+[![Size](https://img.shields.io/badge/Memory-4.18%20GiB%20(-45.43%25)-purple.svg)](#-empirical-scorecard)
 
 <p align="center">
-  <b>4.11B Parameters Compressed to 4.180 GB</b> • <b>94.12% Top-1 Exact Code Match</b> • <b>Zero Attention Drift</b>
+  <b>4.11B Parameters Compressed to 4.18 GiB</b> • <b>93.28% Top-1 Exact Code Match</b> • <b>Zero Attention Drift</b>
 </p>
 
 </div>
@@ -54,7 +54,7 @@ To overcome these fundamental limits, this release introduces two complementary 
 1. **DV-SSQ (Dense-Vectorized Subspace Salience Quantization)**: A heterogeneous multi-precision quantization hierarchy allocating **INT8** to salient semantic concept channels, **Walsh-Hadamard ($H_{256}$) INT4 GSQ** to background MLP parameter mass, and **BF16 SVD** to low-rank high-curvature eigenspace residuals, fortified by a **100% Zero-Compression Shield** preserving all projection biases, Attention projections, RMSNorm gains, and tied token embeddings in pristine **BF16**.
 2. **KV-BSS (Key-Value Binding Softmax Sharpening)**: An attention-layer stabilization mechanism that hardens the hallucination threshold and accelerates associative recall for structured key-value bindings (e.g., `["key"] => "value"`, AST mapping, function signatures) via contrastive temperature scaling ($	au_{\text{focus}} = 1.10$) and background attention haze suppression.
 
-Across an exhaustive 36-layer causal emergence audit on complex recursive algorithmic code (119 tokens), this architecture reduces physical memory from **8.224 GB down to 4.180 GB (-45.43% / 1.833× compression)** while achieving a **94.12% Top-1 exact token match** and an ultra-low Kullback-Leibler divergence of **0.0594 nats**.
+Across an exhaustive 36-layer causal emergence audit on complex recursive algorithmic code (119 tokens), this architecture reduces physical memory from **8.224 GB down to 4.18 GiB (4.49 GB, -45.43% / 1.83× compression)** while achieving a **93.28% Top-1 exact token match** and a Kullback-Leibler divergence of **0.1095 nats**.
 
 ---
 
@@ -64,13 +64,13 @@ The table below presents real empirical measurements gathered across all 36 tran
 
 | Metric Vector | Raw Base Model (BF16) | Spark-X2.5-4B-Hadamard-GSQ | Empirical Significance |
 | :--- | :---: | :---: | :--- |
-| **Total Weight Footprint** | **8.224 GB** (8,224,192,408 B) | **4.180 GB** (4,487,897,256 B) | **-3.736 GB (-45.43% Physical RAM Saved)** |
+| **Total Weight Footprint** | **8.224 GB** (8,224,192,408 B) | **4.18 GiB** (4,487,897,256 B = 4.49 GB) | **-3.74 GB (-45.43% Physical RAM Saved)** |
 | **Compression Ratio** | 1.000× (Baseline) | **1.833× (~1.85×)** | **1.83× Memory Bandwidth Drop** |
-| **Top-1 Exact Argmax Match** | 100.00% (Baseline) | **94.12%** (112/119 tokens) | **Virtually Identical Token Generation** |
-| **Kullback-Leibler Divergence ($D_{\text{KL}}$)** | 0.000000 nats | **0.059400 nats** | **Negligible Distributional Drift (<0.06 nats)** |
-| **Logit Shannon Entropy** | 0.1843 | **0.1774** ($\Delta = -0.0069$) | **Sharper, High-Confidence Output Logits** |
-| **Final Layer 35 Cosine Similarity** | 1.0000000 | **0.9344204** | **Rebounding Semantic Convergence** |
-| **Mean Error Null-Space Fraction** | 0.00% | **53.65%** (up to **82.24%** at L34) | **Quantization Noise Confined to Null-Space** |
+| **Top-1 Exact Argmax Match** | 100.00% (Baseline) | **93.28%** (111/119 tokens) | **Near-Identical Token Generation** |
+| **Kullback-Leibler Divergence ($D_{\text{KL}}$)** | 0.000000 nats | **0.109537 nats** | **Low Distributional Drift (0.11 nats)** |
+| **Logit Shannon Entropy** | 0.1843 | **0.2658** ($\Delta = +0.0815$) | **Slightly Softer Output Logits** |
+| **Final Layer 35 Cosine Similarity** | 1.0000000 | **0.9074698** | **Rebounding Semantic Convergence** |
+| **Mean Error Null-Space Fraction** | 0.00% | **52.14%** (up to **80.99%** at L34) | **Quantization Noise Confined to Null-Space** |
 | **Attention Projection Noise** | 0.000% | **0.00000000%** | **100% Pure BF16 Pass-Through (Zero Drift)** |
 | **Projection Biases & RMSNorms** | 100% BF16 | **100% Pure BF16** | **Zero-Compression Shield (<0.02% size)** |
 | **Semantic Sub-Block Precision** | 16-bit | **8-bit INT8 (Top 12.5% Channels)** | **Dense-Vectorized Subspace Salience Protection** |
@@ -174,23 +174,46 @@ Tracking hidden states layer-by-layer across all 36 layers under a 119-token rec
 ```
 Layer | Type            | Cos Sim    | Rel Dev    | Null-Space %   | Max Deviation 
 ---------------------------------------------------------------------------------
-L00   | Standard        | 0.9985150  | 0.054417   |        97.95%  | 0.015625
-L03   | Bifurcation     | 0.9954785  | 0.094860   |        95.55%  | 0.062500
-L07   | Bifurcation     | 0.9878354  | 0.155463   |        89.46%  | 0.156250
-L11   | Bifurcation     | 0.9337886  | 0.357906   |        57.94%  | 1.671875
-L15   | Bifurcation     | 0.9028997  | 0.436451   |        68.42%  | 1.195312
-L18   | Bifurcation     | 0.9261422  | 0.382887   |        85.01%  | 1.421875
-L22   | Bifurcation     | 0.9497185  | 0.315843   |        79.33%  | 7.406250
-L24   | Phase Trans.    | 0.8180444  | 0.578650   |         2.89%  | 467.250000
-L25   | Bifurcation     | 0.8176156  | 0.579343   |         2.87%  | 486.750000
-L30   | Standard        | 0.8195013  | 0.575567   |         5.19%  | 530.750000
-L33   | Standard        | 0.8428718  | 0.539445   |         9.26%  | 484.000000
-L34   | Standard        | 0.9296827  | 0.373864   |        82.24%  | 43.250000
-L35   | Final Attractor | 0.9344204  | 0.358000   |        76.11%  | 28.187500
+L00   | Standard        | 0.9975160 | 0.073016 |       91.15% | 0.035156
+L01   | Standard        | 0.9955785 | 0.100030 |       86.95% | 0.062500
+L02   | Standard        | 0.9934704 | 0.122554 |       87.19% | 0.105469
+L03   | Bifurcation     | 0.9925426 | 0.123845 |       92.38% | 0.103516
+L04   | Standard        | 0.9913840 | 0.132254 |       92.90% | 0.089844
+L05   | Standard        | 0.9903342 | 0.139293 |       93.04% | 0.091797
+L06   | Standard        | 0.9870370 | 0.160381 |       88.52% | 0.164062
+L07   | Bifurcation     | 0.9829773 | 0.183686 |       85.99% | 0.187500
+L08   | Standard        | 0.9772951 | 0.212491 |       77.08% | 0.750000
+L09   | Standard        | 0.9598164 | 0.280681 |       64.57% | 1.843750
+L10   | Standard        | 0.9469450 | 0.321967 |       66.71% | 0.656250
+L11   | Bifurcation     | 0.9023665 | 0.432747 |       60.65% | 1.273438
+L12   | Standard        | 0.9036111 | 0.431009 |       68.60% | 0.628906
+L13   | Standard        | 0.9063144 | 0.427943 |       72.74% | 1.238281
+L14   | Standard        | 0.8997724 | 0.442288 |       72.86% | 2.304688
+L15   | Bifurcation     | 0.8465578 | 0.552775 |       66.84% | 2.468750
+L16   | Bifurcation     | 0.8621729 | 0.527680 |       72.56% | 1.757812
+L17   | Bifurcation     | 0.8834488 | 0.487021 |       79.01% | 1.501953
+L18   | Bifurcation     | 0.8919217 | 0.467094 |       83.43% | 1.781250
+L19   | Bifurcation     | 0.8436016 | 0.542750 |       36.46% | 46.703125
+L20   | Bifurcation     | 0.8313265 | 0.558355 |       22.23% | 81.843750
+L21   | Bifurcation     | 0.8457606 | 0.535070 |       21.56% | 98.937500
+L22   | Bifurcation     | 0.9257857 | 0.383032 |       76.77% | 9.562500
+L23   | Bifurcation     | 0.7973002 | 0.603793 |        4.33% | 388.437500
+L24   | Bifurcation     | 0.7899307 | 0.613267 |        3.35% | 499.500000
+L25   | Bifurcation     | 0.7895826 | 0.613679 |        3.36% | 519.437500
+L26   | Bifurcation     | 0.7878688 | 0.615870 |        3.49% | 530.312500
+L27   | Bifurcation     | 0.7982055 | 0.602432 |        4.83% | 548.500000
+L28   | Bifurcation     | 0.8001919 | 0.599782 |        5.06% | 555.375000
+L29   | Standard        | 0.8020066 | 0.597365 |        5.45% | 554.500000
+L30   | Standard        | 0.7929295 | 0.609450 |        6.16% | 562.875000
+L31   | Bifurcation     | 0.8092623 | 0.587566 |        7.88% | 555.000000
+L32   | Standard        | 0.8118284 | 0.584062 |        8.67% | 556.000000
+L33   | Standard        | 0.8210148 | 0.571138 |       11.18% | 508.750000
+L34   | Standard        | 0.9061206 | 0.432959 |       80.99% | 34.500000
+L35   | Bifurcation     | 0.9074698 | 0.427402 |       72.04% | 30.375000
 ```
 
 > [!NOTE]
-> **Key Finding**: While intermediate abstraction layers (L23–L28) absorb representation shift, the network exhibits a dramatic semantic rebound in Layers 33–35. Cosine similarity surges from **0.8176 up to 0.9344**, with **82.24%** of remaining noise strictly confined to the null-space orthogonal to semantic representation.
+> **Key Finding**: While intermediate abstraction layers (L23–L28) absorb representation shift, the network exhibits a dramatic semantic rebound in Layers 33–35. Cosine similarity rebounds from **0.7879 up to 0.9075**, with **80.99%** (L34) of remaining noise strictly confined to the null-space orthogonal to semantic representation. Raw telemetry: `ultra_deep_audit_report.json` (Top-1 93.28%, KL 0.1095).
 
 ---
 

@@ -15,10 +15,20 @@ import os
 import sys
 import json
 import torch
+import argparse
+from pathlib import Path
 import safetensors.torch
 
-QUANT_DIR = r"C:\Users\PC MOD\Desktop\spark_hadamard_quant\quantized_model"
-RAW_DIR = r"C:\Users\PC MOD\Desktop\spark_hadamard_quant\raw_model"
+_SCRIPT_DIR = str(Path(__file__).resolve().parent)
+QUANT_DIR = _SCRIPT_DIR
+RAW_DIR = _SCRIPT_DIR
+
+def _apply_dirs(quant_dir=None, raw_dir=None):
+    global QUANT_DIR, RAW_DIR
+    if quant_dir:
+        QUANT_DIR = quant_dir
+    if raw_dir:
+        RAW_DIR = raw_dir
 
 def run_verification():
     print("=" * 80)
@@ -180,4 +190,9 @@ def run_verification():
     print("=" * 80)
 
 if __name__ == "__main__":
+    _ap = argparse.ArgumentParser(description="Verify quantized Spark model")
+    _ap.add_argument("--quant_dir", type=str, default=_SCRIPT_DIR)
+    _ap.add_argument("--raw_dir", type=str, default=_SCRIPT_DIR)
+    _a = _ap.parse_args()
+    _apply_dirs(_a.quant_dir, _a.raw_dir)
     run_verification()

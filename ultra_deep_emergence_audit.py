@@ -20,12 +20,24 @@ import numpy as np
 import scipy.linalg
 import torch
 import torch.nn.functional as F
+import argparse
+from pathlib import Path
 import safetensors.torch
 from transformers import AutoTokenizer
 
-RAW_DIR = r"C:\Users\PC MOD\Desktop\spark_hadamard_quant\raw_model"
-QUANT_DIR = r"C:\Users\PC MOD\Desktop\spark_hadamard_quant\quantized_model"
-AUDIT_REPORT_PATH = r"C:\Users\PC MOD\Desktop\spark_hadamard_quant\ultra_deep_audit_report.json"
+_SCRIPT_DIR = str(Path(__file__).resolve().parent)
+RAW_DIR = _SCRIPT_DIR
+QUANT_DIR = _SCRIPT_DIR
+AUDIT_REPORT_PATH = os.path.join(_SCRIPT_DIR, "ultra_deep_audit_report.json")
+
+def _apply_dirs(quant_dir=None, raw_dir=None, report=None):
+    global QUANT_DIR, RAW_DIR, AUDIT_REPORT_PATH
+    if quant_dir:
+        QUANT_DIR = quant_dir
+    if raw_dir:
+        RAW_DIR = raw_dir
+    if report:
+        AUDIT_REPORT_PATH = report
 
 # Maximize multi-threaded execution
 torch.set_num_threads(os.cpu_count() or 8)
@@ -366,4 +378,11 @@ def run_ultra_deep_audit():
     return full_audit_report
 
 if __name__ == "__main__":
+    _ap = argparse.ArgumentParser(description="Ultra-deep emergence audit")
+    _ap.add_argument("--quant_dir", type=str, default=_SCRIPT_DIR)
+    _ap.add_argument("--raw_dir", type=str, default=_SCRIPT_DIR)
+    _ap.add_argument("--report", type=str, default=AUDIT_REPORT_PATH)
+    _a = _ap.parse_args()
+    _apply_dirs(_a.quant_dir, _a.raw_dir, _a.report)
     run_ultra_deep_audit()
+

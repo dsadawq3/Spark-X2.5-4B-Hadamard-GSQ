@@ -21,6 +21,8 @@ import json
 import math
 import shutil
 import argparse
+from pathlib import Path
+_SCRIPT_DIR = str(Path(__file__).resolve().parent)
 import numpy as np
 import scipy.linalg
 import torch
@@ -450,13 +452,13 @@ if __name__ == "__main__":
     parser.add_argument(
         "--raw_dir",
         type=str,
-        default=r"C:\Users\PC MOD\Desktop\spark_hadamard_quant\raw_model",
+        default=_SCRIPT_DIR,
         help="Path to raw model directory",
     )
     parser.add_argument(
         "--out_dir",
         type=str,
-        default=r"C:\Users\PC MOD\Desktop\spark_hadamard_quant\quantized_model",
+        default=_SCRIPT_DIR,
         help="Path to output quantized model directory",
     )
     args = parser.parse_args()

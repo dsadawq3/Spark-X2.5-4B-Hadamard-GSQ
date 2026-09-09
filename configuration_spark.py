@@ -36,30 +36,73 @@ class Spark2_5Config(PretrainedConfig):
 
     def __init__(
         self,
-        vocab_size=32000,
-        hidden_size=4096,
-        intermediate_size=11008,
-        num_hidden_layers=32,
-        num_attention_heads=32,
-        num_key_value_heads=None,
+        vocab_size=131072,
+        hidden_size=2560,
+        intermediate_size=10240,
+        num_hidden_layers=36,
+        num_attention_heads=16,
+        num_key_value_heads=4,
         hidden_act="gelu",
-        max_position_embeddings=2048,
-        initializer_range=0.02,
+        max_position_embeddings=1048576,
+        initializer_range=0.01976,
         rms_norm_eps=1e-6,
         use_cache=True,
-        pad_token_id=None,
-        bos_token_id=1,
-        eos_token_id=2,
-        tie_word_embeddings=False,
+        pad_token_id=2,
+        bos_token_id=0,
+        eos_token_id=1,
+        tie_word_embeddings=True,
         rope_parameters=None,
         attention_bias=False,
         attention_dropout=0.0,
         mlp_bias=False,
-        head_dim=None,
-        headwise_attn_output_gate=False,
+        head_dim=256,
+        headwise_attn_output_gate=True,
         gate_attn_act_mode="sigmoid",
-        sliding_window=None,
-        layer_types=None,
+        sliding_window=512,
+        layer_types=([
+            "sliding_attention",
+            "sliding_attention",
+            "sliding_attention",
+            "full_attention",
+            "sliding_attention",
+            "sliding_attention",
+            "sliding_attention",
+            "full_attention",
+            "sliding_attention",
+            "sliding_attention",
+            "sliding_attention",
+            "full_attention",
+            "sliding_attention",
+            "sliding_attention",
+            "sliding_attention",
+            "full_attention",
+            "sliding_attention",
+            "sliding_attention",
+            "sliding_attention",
+            "full_attention",
+            "sliding_attention",
+            "sliding_attention",
+            "sliding_attention",
+            "full_attention",
+            "sliding_attention",
+            "sliding_attention",
+            "sliding_attention",
+            "full_attention",
+            "sliding_attention",
+            "sliding_attention",
+            "sliding_attention",
+            "full_attention",
+            "sliding_attention",
+            "sliding_attention",
+            "sliding_attention",
+            "full_attention",
+        ]),
+        gsq_int4=False,
+        hadamard_spin=False,
+        dv_ssq=False,
+        selective_attention_preservation=False,
+        key_value_binding_sharpening=False,
+        kv_focus_factor=1.10,
         **kwargs,
     ):
         self.vocab_size = vocab_size
@@ -88,6 +131,12 @@ class Spark2_5Config(PretrainedConfig):
         self.headwise_attn_output_gate = headwise_attn_output_gate
         self.gate_attn_act_mode = gate_attn_act_mode
         self.sliding_window = sliding_window
+        self.gsq_int4 = gsq_int4
+        self.hadamard_spin = hadamard_spin
+        self.dv_ssq = dv_ssq
+        self.selective_attention_preservation = selective_attention_preservation
+        self.key_value_binding_sharpening = key_value_binding_sharpening
+        self.kv_focus_factor = kv_focus_factor
         self.rope_parameters = rope_parameters
 
         if layer_types is None:
@@ -103,7 +152,13 @@ class Spark2_5Config(PretrainedConfig):
             bos_token_id=bos_token_id,
             eos_token_id=eos_token_id,
             tie_word_embeddings=tie_word_embeddings,
-            **kwargs,
+            gsq_int4=False,
+        hadamard_spin=False,
+        dv_ssq=False,
+        selective_attention_preservation=False,
+        key_value_binding_sharpening=False,
+        kv_focus_factor=1.10,
+        **kwargs,
         )
 
     def get_rope_theta(self, layer_type):
