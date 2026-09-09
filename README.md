@@ -50,7 +50,7 @@ model_name: Spark-X2.5-4B-Hadamard-GSQ
 
 Standard uniform post-training quantization (such as naive INT4) severely degrades reasoning abstraction by treating all matrix weights identically, corrupting outlier channels, and diffusing attention distributions on long contexts. 
 
-To overcome these fundamental limits, this release introduces two complementary architectural paradigms:
+To overcome these fundamental limits, this release combines established techniques into an edge-focused pipeline:
 1. **DV-SSQ (Dense-Vectorized Subspace Salience Quantization)**: A heterogeneous multi-precision quantization hierarchy allocating **INT8** to salient semantic concept channels, **Walsh-Hadamard ($H_{256}$) INT4 GSQ** to background MLP parameter mass, and **BF16 SVD** to low-rank high-curvature eigenspace residuals, fortified by a **100% Zero-Compression Shield** preserving all projection biases, Attention projections, RMSNorm gains, and tied token embeddings in pristine **BF16**.
 2. **KV-BSS (Key-Value Binding Softmax Sharpening)**: An attention-layer stabilization mechanism that hardens the hallucination threshold and accelerates associative recall for structured key-value bindings (e.g., `["key"] => "value"`, AST mapping, function signatures) via contrastive temperature scaling ($	au_{\text{focus}} = 1.10$) and background attention haze suppression.
 
@@ -138,7 +138,7 @@ $$
 
 Diffuse low-magnitude logits accumulate across wide contexts, creating an "attention haze" that siphons probability mass away from exact antecedent keys, inducing code hallucinations.
 
-**KV-BSS solves this with dual attention interventions:**
+**KV-BSS addresses this with dual attention interventions:**
 
 1. **Focus Factor Scaling ($	au_{\text{focus}} = 1.10$):**
 
@@ -279,6 +279,18 @@ Spark-X2.5-4B-Hadamard-GSQ/
 ├── special_tokens_map.json         # Special token identifiers
 └── README.md                       # Architectural specification and benchmarks
 ```
+
+---
+
+## Related Work & Attribution
+
+This release builds on established quantization literature; our contribution is the composition into an edge-focused pipeline plus per-model artifacts and edge measurements.
+
+- [QuaRot](https://arxiv.org/abs/2404.00456) — Hadamard rotation for quantization; we use the same principle with fixed H256 Walsh-Hadamard blocks + GSQ, without claiming the rotation itself.
+- [SpinQuant](https://arxiv.org/abs/2405.16406) — learned rotations; we use fixed Walsh-Hadamard blocks with no training, trading adaptivity for edge simplicity.
+- [GPTQ](https://arxiv.org/abs/2210.17323) / [AWQ](https://arxiv.org/abs/2306.00978) — group quantization and salient channels; our GSQ (g=64) and INT8 tier follow in the spirit of that work.
+- [ZeroQuant-V2](https://arxiv.org/abs/2307.09782) / [LoRC](https://arxiv.org/abs/2312.09934) — low-rank compensation of quantization error; our RCO is the same class of idea applied to GSQ residuals.
+- [LLM.int8()](https://arxiv.org/abs/2208.07339) / [SpQR](https://arxiv.org/abs/2306.03078) — mixed precision for outliers; our DV-SSQ salient tier follows the same approach.
 
 ---
 
