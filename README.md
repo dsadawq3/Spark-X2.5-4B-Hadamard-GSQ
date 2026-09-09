@@ -22,6 +22,41 @@ tags:
 - empirical-emergence
 base_model: XHToken/Spark-X2.5-4B
 model_name: Spark-X2.5-4B-Hadamard-GSQ
+model-index:
+- name: Spark-X2.5-4B-Hadamard-GSQ
+  results:
+  - task:
+      type: text-generation
+    dataset:
+      name: custom/single-prompt-audit
+      type: custom
+      config: single recursive-algorithm code prompt, 119 tokens
+      split: audit
+      revision: ultra_deep_audit_report.json
+    metrics:
+    - name: top-1 exact match
+      type: top-1 exact match
+      value: 93.28
+      unit: percent
+      value_string: 93.28% (111/119 tokens)
+    - name: kl_divergence
+      type: kl_divergence
+      value: 0.1095
+      unit: nats
+      value_string: 0.1095 nats
+    - name: cosine similarity (final layer 35)
+      type: cosine
+      value: 0.9075
+      value_string: 0.9075
+    - name: logit entropy (raw)
+      type: entropy
+      value: 0.1843
+      value_string: 0.1843
+    - name: logit entropy (quant)
+      type: entropy
+      value: 0.2658
+      value_string: 0.2658
+
 ---
 
 <div align="center">
