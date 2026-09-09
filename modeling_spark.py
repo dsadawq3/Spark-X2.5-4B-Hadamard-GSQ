@@ -573,13 +573,17 @@ class Spark2_5Model(Spark2_5PreTrainedModel):
         if use_cache and past_key_values is None:
             past_key_values = DynamicCache(config=self.config)
 
-        if cache_position is None:
+        # NOTE (transformers>=5 compat): generate() may pass trimmed inputs_embeds
+        # with FULL-length position_ids / stale cache_position. Rebuild whenever
+        # shapes disagree with the current input length, else RoPE broadcast can
+        # silently expand the query length and break attention masking.
+        _q_len = inputs_embeds.shape[1]
+        if cache_position is None or cache_position.shape[0] != _q_len:
             past_seen_tokens = past_key_values.get_seq_length() if past_key_values is not None else 0
             cache_position = torch.arange(
-                past_seen_tokens, past_seen_tokens + inputs_embeds.shape[1], device=inputs_embeds.device
+                past_seen_tokens, past_seen_tokens + _q_len, device=inputs_embeds.device
             )
-
-        if position_ids is None:
+        if position_ids is None or position_ids.shape[-1] != _q_len:
             position_ids = cache_position.unsqueeze(0)
 
         if not isinstance(attention_mask, dict):
