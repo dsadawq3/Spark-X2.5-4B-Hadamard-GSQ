@@ -1,6 +1,6 @@
 """
 ================================================================================
-F-LABS VERIFICATION & BENCHMARK SUITE: SPARK-X2.5-4B-HADAMARD-GSQ
+F-LABS VERIFICATION & BENCHMARK SUITE: SPARK-X2.5-4B-HADAMARD GROUP-WISE INT4
 ================================================================================
 Validates:
 1. Safetensors shard integrity, total size, and parameter counts
@@ -85,7 +85,7 @@ def run_verification():
     print("EMPIRICAL COMPRESSION METRICS:")
     print("=" * 80)
     print(f"  Uncompressed Base Model Size:  {raw_total_bytes / (1024**3):.3f} GB ({raw_total_bytes:,} bytes)")
-    print(f"  Hadamard-GSQ Compressed Size:  {total_file_bytes / (1024**3):.3f} GB ({total_file_bytes:,} bytes)")
+    print(f"  Hadamard group-wise INT4 Compressed Size:  {total_file_bytes / (1024**3):.3f} GB ({total_file_bytes:,} bytes)")
     print(f"  Absolute Storage Saved:        {(raw_total_bytes - total_file_bytes) / (1024**3):.3f} GB")
     print(f"  Exact Compression Ratio:       {compression_ratio:.3f}x")
     print(f"  Memory Footprint Reduction:    {percent_saved:.2f}%")

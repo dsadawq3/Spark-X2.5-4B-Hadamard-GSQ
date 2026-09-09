@@ -90,7 +90,7 @@
   "residual_rank": "16-32",
   "effective_bits": "5.62-MLP / 16.0-Attn",
   "quantization_config": {
-    "quant_method": "dv_ssq_hadamard_int8_int4_rco",
+    "quant_method": "dv_ssq_hadamard_int8_int4_src",
     "bits_background": 4,
     "bits_salient": 8,
     "salient_channels_ratio": 0.125,

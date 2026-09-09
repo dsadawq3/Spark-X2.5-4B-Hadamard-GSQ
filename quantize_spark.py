@@ -5,7 +5,7 @@ ARCHITECTURE: DENSE-VECTORIZED SUBSPACE SALIENCE QUANTIZATION (DV-SSQ)
 MULTI-PRECISION TIERS:
   - 16-BIT (BF16): ATTENTION PROJECTIONS, LM_HEAD, EMBEDDINGS, BIASES, SVD LOW-RANK (r=16/32)
   -  8-BIT (INT8): SALIENT SEMANTIC CHANNELS (TOP 12.5% ENERGY SUB-BLOCKS)
-  -  4-BIT (INT4): BACKGROUND PARAMETER MASS (GSQ g=64) + WALSH-HADAMARD SPIN (H_256)
+  -  4-BIT (INT4): BACKGROUND PARAMETER MASS (group-wise INT4, g=64) + WALSH-HADAMARD SPIN (H_256)
 ================================================================================
 Author: Master Quantization and Compression Architect, F-Labs
 Target Model: Spark-X2.5-4B (4.11B parameters, 8.22 GB BF16)
@@ -116,8 +116,8 @@ def quantize_dv_ssq(
     Executes Dense-Vectorized Subspace Salience Quantization (DV-SSQ):
     1. Channel Salience Ranking: Identify top salient semantic channels (12.5% energy).
     2. Salient Subspace Quantization: Quantize salient channels in signed INT8 [-128, 127].
-    3. Background Subspace Quantization: Quantize background mass in signed INT4 [-8, 7] (GSQ g=64).
-    4. Truncated SVD RCO: Extract low-rank residual factors A, B in BF16 (rank in {16, 32}).
+    3. Background Subspace Quantization: Quantize background mass in signed INT4 [-8, 7] (group-wise, g=64).
+    4. Truncated SVD SRC: Extract low-rank residual factors A, B in BF16 (rank in {16, 32}).
     5. Closed-Form Optimal Refinement for Bifurcation Hubs.
     Returns:
     - packed_Q (uint8, N x K//2)
@@ -133,7 +133,7 @@ def quantize_dv_ssq(
     assert K % group_size == 0, f"K ({K}) must be divisible by group_size ({group_size})"
     W_f = W.float()
 
-    # Step 1: Base INT4 Group-Scale Quantization across all groups
+    # Step 1: Base INT4 group-wise quantization across all groups
     Wg = W_f.view(-1, group_size)
     s_base = (Wg.abs().amax(dim=1, keepdim=True) / 7.0).clamp(min=1e-8)
     Q_int4 = torch.clamp(torch.round(Wg / s_base), -8, 7)
@@ -155,7 +155,7 @@ def quantize_dv_ssq(
     # Step 4: Residual error extraction R = W - W_hat
     R = W_f - W_hat
 
-    # Step 5: Truncated SVD RCO on residual
+    # Step 5: Truncated SVD SRC on residual
     U, S_vals, V = torch.svd_lowrank(R, q=rank, niter=4)
     sqrt_S = torch.sqrt(S_vals)
     A = U * sqrt_S
@@ -377,7 +377,7 @@ def run_master_quantization(raw_model_dir: str, quantized_model_dir: str):
         "metadata": {
             "total_parameters": raw_index["metadata"].get("total_parameters", 4112079360),
             "total_size": total_quantized_bytes,
-            "quantization": "DV-SSQ-Hadamard-INT8-INT4-GSQ-RCO",
+            "quantization": "DV-SSQ-Hadamard-INT8-INT4-groupwise-SRC",
             "effective_bits": 5.62,
             "group_size": 64,
             "residual_ranks": "16-32",
@@ -402,7 +402,7 @@ def run_master_quantization(raw_model_dir: str, quantized_model_dir: str):
     config["residual_rank"] = "16-32"
     config["effective_bits"] = "5.62-MLP / 16.0-Attn"
     config["quantization_config"] = {
-        "quant_method": "dv_ssq_hadamard_int8_int4_rco",
+        "quant_method": "dv_ssq_hadamard_int8_int4_src",
         "bits_background": 4,
         "bits_salient": 8,
         "salient_channels_ratio": 0.125,

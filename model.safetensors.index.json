@@ -2,7 +2,7 @@
   "metadata": {
     "total_parameters": 4112079360,
     "total_size": 4487792640,
-    "quantization": "DV-SSQ-Hadamard-INT8-INT4-GSQ-RCO",
+    "quantization": "DV-SSQ-Hadamard-INT8-INT4-groupwise-SRC",
     "effective_bits": 5.62,
     "group_size": 64,
     "residual_ranks": "16-32",

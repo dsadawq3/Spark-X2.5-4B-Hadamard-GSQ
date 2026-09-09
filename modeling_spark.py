@@ -42,14 +42,14 @@ _CONFIG_FOR_DOC = "Spark2_5Config"
 
 
 # ==============================================================================
-# F-LABS HADAMARD-SPIN GSQ INT4 + RCO LOW-RANK SVD LINEAR LAYER
+# F-LABS HADAMARD-SPIN GROUP-WISE INT4 + SRC LOW-RANK SVD LINEAR LAYER
 # ==============================================================================
 class HadamardGSQLinear(nn.Module):
     """
     Production-grade compressed Linear module implementing:
       - Orthonormal Walsh-Hadamard spin rotation for activation and weight outlier elimination
-      - Group-Scale Quantization (GSQ) INT4 with symmetric group scaling (group_size=64)
-      - Residual Compensation Optimization (RCO) Low-Rank SVD (r in {16, 32})
+      - Group-wise INT4 quantization with symmetric group scaling (group_size=64)
+      - SVD Residual Compensation (SRC) Low-Rank SVD (r in {16, 32})
       - Invertible algebraic reconstruction: W_eff = (dequantize(Q, s) + A @ B) @ H
     """
     def __init__(
