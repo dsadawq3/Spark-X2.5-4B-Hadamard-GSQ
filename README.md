@@ -79,9 +79,21 @@ model-index:
 
 ---
 
+> **P.S. — Legacy FQuant snapshot (2026-09-12):** This Spark release was not
+> rebuilt or revalidated against the current FQuant framework. It remains a
+> historical compressed artifact with its original weight layout and validation
+> report. The newer calibration-aware adaptive pipeline is currently documented
+> in the MiniCPM5-2B release; do not interpret this Spark snapshot as a current
+> FQuant release or compare its single-prompt audit directly with the newer
+> evaluation path.
+
 ## 📌 Executive Overview
 
-**Spark-X2.5-4B-Hadamard-GSQ** is a production-grade compressed release of the 4.11-billion parameter **Spark-X2.5-4B** foundation model, engineered at **F-Labs**. 
+**Spark-X2.5-4B-Hadamard-GSQ** is a historical compressed release of the 4.11-billion parameter **Spark-X2.5-4B** foundation model, engineered at **F-Labs**.
+
+The measurements below describe this frozen snapshot and its original
+single-prompt audit. They are not measurements of the current FQuant adaptive
+pipeline or a general benchmark.
 
 Standard uniform post-training quantization (such as naive INT4) severely degrades reasoning abstraction by treating all matrix weights identically, corrupting outlier channels, and diffusing attention distributions on long contexts. 
 
