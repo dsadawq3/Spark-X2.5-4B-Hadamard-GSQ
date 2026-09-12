@@ -63,6 +63,11 @@ COMPLEX_CODE_PROMPT = '''def binary_tree_diameter(root):
 '''
 
 def run_ultra_deep_audit():
+    if os.path.abspath(RAW_DIR) == os.path.abspath(QUANT_DIR):
+        raise ValueError(
+            "raw_dir must point to a separate unquantized BF16 model directory; "
+            "the quantized release does not contain raw weights"
+        )
     print("=" * 80)
     print("F-LABS ULTRA-DEEP EMPIRICAL AUDIT: SPARK-X2.5-4B vs QUANTIZED MODEL")
     print("=" * 80)
@@ -380,9 +385,8 @@ def run_ultra_deep_audit():
 if __name__ == "__main__":
     _ap = argparse.ArgumentParser(description="Ultra-deep emergence audit")
     _ap.add_argument("--quant_dir", type=str, default=_SCRIPT_DIR)
-    _ap.add_argument("--raw_dir", type=str, default=_SCRIPT_DIR)
+    _ap.add_argument("--raw_dir", type=str, required=True, help="Separate raw BF16 model directory")
     _ap.add_argument("--report", type=str, default=AUDIT_REPORT_PATH)
     _a = _ap.parse_args()
     _apply_dirs(_a.quant_dir, _a.raw_dir, _a.report)
     run_ultra_deep_audit()
-

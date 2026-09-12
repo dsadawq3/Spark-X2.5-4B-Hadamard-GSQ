@@ -23,6 +23,8 @@ import shutil
 import argparse
 from pathlib import Path
 _SCRIPT_DIR = str(Path(__file__).resolve().parent)
+DEFAULT_RAW_MODEL_DIR = os.path.join(_SCRIPT_DIR, "raw_model")
+DEFAULT_QUANT_MODEL_DIR = os.path.join(_SCRIPT_DIR, "quantized_model")
 import numpy as np
 import scipy.linalg
 import torch
@@ -207,6 +209,9 @@ def run_master_quantization(raw_model_dir: str, quantized_model_dir: str):
     print("F-LABS SPARK-X2.5-4B AUTONOMOUS DV-SSQ QUANTIZATION PIPELINE")
     print("=" * 85)
     start_time = time.time()
+
+    if os.path.abspath(raw_model_dir) == os.path.abspath(quantized_model_dir):
+        raise ValueError("raw_model_dir and quantized_model_dir must be different to protect source weights")
 
     os.makedirs(quantized_model_dir, exist_ok=True)
 
@@ -401,7 +406,7 @@ def run_master_quantization(raw_model_dir: str, quantized_model_dir: str):
     config["selective_attention_preservation"] = True
     config["residual_rank"] = "16-32"
     config["effective_bits"] = "5.62-MLP / 16.0-Attn"
-    config["quantization_config"] = {
+    config["fquant_quantization_config"] = {
         "quant_method": "dv_ssq_hadamard_int8_int4_src",
         "bits_background": 4,
         "bits_salient": 8,
@@ -452,13 +457,13 @@ if __name__ == "__main__":
     parser.add_argument(
         "--raw_dir",
         type=str,
-        default=_SCRIPT_DIR,
+        default=DEFAULT_RAW_MODEL_DIR,
         help="Path to raw model directory",
     )
     parser.add_argument(
         "--out_dir",
         type=str,
-        default=_SCRIPT_DIR,
+        default=DEFAULT_QUANT_MODEL_DIR,
         help="Path to output quantized model directory",
     )
     args = parser.parse_args()

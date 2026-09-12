@@ -318,7 +318,11 @@ class Spark2_5MLP(nn.Module):
 
         use_quant = getattr(config, "gsq_int4", False)
         if use_quant:
-            bifurcation_layers = getattr(config, "quantization_config", {}).get("bifurcation_layers", [])
+            quant_config = getattr(config, "fquant_quantization_config", None)
+            if not isinstance(quant_config, dict):
+                # Backward compatibility for checkpoints with the old field.
+                quant_config = getattr(config, "quantization_config", {})
+            bifurcation_layers = quant_config.get("bifurcation_layers", [])
             is_bifurcation = layer_idx in bifurcation_layers
             rank = 32 if is_bifurcation else 16
             self.gate_proj = HadamardGSQLinear(
@@ -589,7 +593,7 @@ class Spark2_5Model(Spark2_5PreTrainedModel):
         if not isinstance(attention_mask, dict):
             mask_kwargs = {
                 "config": self.config,
-                "input_embeds": inputs_embeds,
+                "inputs_embeds": inputs_embeds,
                 "attention_mask": attention_mask,
                 "cache_position": cache_position,
                 "past_key_values": past_key_values,

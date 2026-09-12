@@ -137,8 +137,6 @@ class Spark2_5Config(PretrainedConfig):
         self.selective_attention_preservation = selective_attention_preservation
         self.key_value_binding_sharpening = key_value_binding_sharpening
         self.kv_focus_factor = kv_focus_factor
-        self.rope_parameters = rope_parameters
-
         if layer_types is None:
             layer_types = ["full_attention"] * num_hidden_layers
         if len(layer_types) != num_hidden_layers:
@@ -152,21 +150,27 @@ class Spark2_5Config(PretrainedConfig):
             bos_token_id=bos_token_id,
             eos_token_id=eos_token_id,
             tie_word_embeddings=tie_word_embeddings,
-            gsq_int4=False,
-        hadamard_spin=False,
-        dv_ssq=False,
-        selective_attention_preservation=False,
-        key_value_binding_sharpening=False,
-        kv_focus_factor=1.10,
-        **kwargs,
+            gsq_int4=gsq_int4,
+            hadamard_spin=hadamard_spin,
+            dv_ssq=dv_ssq,
+            selective_attention_preservation=selective_attention_preservation,
+            key_value_binding_sharpening=key_value_binding_sharpening,
+            kv_focus_factor=kv_focus_factor,
+            **kwargs,
         )
+        # Spark uses a per-layer RoPE schema consumed by this custom modeling
+        # implementation. Set it after generic config initialization so
+        # Transformers does not reinterpret the nested mapping.
+        self.rope_parameters = rope_parameters or {}
 
     def get_rope_theta(self, layer_type):
-        params = self.rope_parameters.get(layer_type, {})
+        rope_parameters = self.rope_parameters or {}
+        params = rope_parameters.get(layer_type, rope_parameters if "rope_theta" in rope_parameters else {})
         return params.get("rope_theta", 10000)
 
     def get_partial_rotary_factor(self, layer_type):
-        params = self.rope_parameters.get(layer_type, {})
+        rope_parameters = self.rope_parameters or {}
+        params = rope_parameters.get(layer_type, rope_parameters if "partial_rotary_factor" in rope_parameters else {})
         return params.get("partial_rotary_factor", 1.0)
 
 

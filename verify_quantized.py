@@ -21,7 +21,7 @@ import safetensors.torch
 
 _SCRIPT_DIR = str(Path(__file__).resolve().parent)
 QUANT_DIR = _SCRIPT_DIR
-RAW_DIR = _SCRIPT_DIR
+RAW_DIR = None
 
 def _apply_dirs(quant_dir=None, raw_dir=None):
     global QUANT_DIR, RAW_DIR
@@ -69,27 +69,32 @@ def run_verification():
     assert loaded_keys_count == len(weight_map), f"Key mismatch! Loaded {loaded_keys_count} vs Mapped {len(weight_map)}"
     print(f"[*] Shard verification complete. All {loaded_keys_count} tensors accounted for.")
 
-    # 3. Calculate exact compression ratio vs raw model
-    raw_index_path = os.path.join(RAW_DIR, "model.safetensors.index.json")
-    with open(raw_index_path, "r") as f:
-        raw_index = json.load(f)
+    # 3. Calculate exact compression ratio only when a separate raw model is supplied.
+    if RAW_DIR is not None:
+        if os.path.abspath(RAW_DIR) == os.path.abspath(QUANT_DIR):
+            raise ValueError("raw_dir and quant_dir must be different; refusing a self-comparison")
+        raw_index_path = os.path.join(RAW_DIR, "model.safetensors.index.json")
+        with open(raw_index_path, "r") as f:
+            raw_index = json.load(f)
 
-    raw_total_bytes = 0
-    for raw_shard in set(raw_index["weight_map"].values()):
-        raw_total_bytes += os.path.getsize(os.path.join(RAW_DIR, raw_shard))
+        raw_total_bytes = 0
+        for raw_shard in set(raw_index["weight_map"].values()):
+            raw_total_bytes += os.path.getsize(os.path.join(RAW_DIR, raw_shard))
 
-    compression_ratio = raw_total_bytes / total_file_bytes
-    percent_saved = (1.0 - total_file_bytes / raw_total_bytes) * 100.0
+        compression_ratio = raw_total_bytes / total_file_bytes
+        percent_saved = (1.0 - total_file_bytes / raw_total_bytes) * 100.0
 
-    print("\n" + "=" * 80)
-    print("EMPIRICAL COMPRESSION METRICS:")
-    print("=" * 80)
-    print(f"  Uncompressed Base Model Size:  {raw_total_bytes / (1024**3):.3f} GB ({raw_total_bytes:,} bytes)")
-    print(f"  Hadamard group-wise INT4 Compressed Size:  {total_file_bytes / (1024**3):.3f} GB ({total_file_bytes:,} bytes)")
-    print(f"  Absolute Storage Saved:        {(raw_total_bytes - total_file_bytes) / (1024**3):.3f} GB")
-    print(f"  Exact Compression Ratio:       {compression_ratio:.3f}x")
-    print(f"  Memory Footprint Reduction:    {percent_saved:.2f}%")
-    print("=" * 80)
+        print("\n" + "=" * 80)
+        print("EMPIRICAL COMPRESSION METRICS:")
+        print("=" * 80)
+        print(f"  Uncompressed Base Model Size:  {raw_total_bytes / (1024**3):.3f} GB ({raw_total_bytes:,} bytes)")
+        print(f"  Hadamard group-wise INT4 Compressed Size:  {total_file_bytes / (1024**3):.3f} GB ({total_file_bytes:,} bytes)")
+        print(f"  Absolute Storage Saved:        {(raw_total_bytes - total_file_bytes) / (1024**3):.3f} GB")
+        print(f"  Exact Compression Ratio:       {compression_ratio:.3f}x")
+        print(f"  Memory Footprint Reduction:    {percent_saved:.2f}%")
+        print("=" * 80)
+    else:
+        print("\n[*] raw_dir not supplied; skipping compression comparison with the BF16 base model.")
 
     # 4. Functional test on Layer 0 and Layer 3 (Bifurcation Hub)
     print("\n[*] Validating execution of HadamardGSQLinear from saved weights...")
@@ -167,7 +172,7 @@ def run_verification():
     print(f"    Embedding tensor verified: shape {tuple(embed.shape)}, dtype: {embed.dtype}")
     assert embed.dtype == torch.bfloat16, "Embedding must be BF16"
     assert embed.shape == (131072, 2560), "Embedding shape mismatch"
-    print("    [PASS] Pillar 2 Zero-compression shield verified!")
+    print("    [PASS] Zero-compression shield verified!")
 
     # 5. Full Architecture Forward Pass Test
     print("\n[*] Validating full 36-layer Spark2_5ForCausalLM forward execution...")
@@ -186,13 +191,13 @@ def run_verification():
     print("    [PASS] Full causal language model forward pass certified!")
 
     print("\n" + "=" * 80)
-    print("ALL 5 ARCHITECTURAL PILLARS INDEPENDENTLY VERIFIED AND CERTIFIED!")
+    print("ALL STRUCTURAL AND FUNCTIONAL CHECKS PASSED!")
     print("=" * 80)
 
 if __name__ == "__main__":
     _ap = argparse.ArgumentParser(description="Verify quantized Spark model")
     _ap.add_argument("--quant_dir", type=str, default=_SCRIPT_DIR)
-    _ap.add_argument("--raw_dir", type=str, default=_SCRIPT_DIR)
+    _ap.add_argument("--raw_dir", type=str, default=None, help="Optional separate raw BF16 model directory")
     _a = _ap.parse_args()
     _apply_dirs(_a.quant_dir, _a.raw_dir)
     run_verification()
